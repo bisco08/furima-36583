@@ -29,29 +29,29 @@ RSpec.describe Item, type: :model do
         expect(@item.errors.full_messages).to include("Content can't be blank")
       end
       it 'category_idが空では投稿できない' do
-        @item.category_id = ''
+        @item.category_id = '1'
         @item.valid?
-        expect(@item.errors.full_messages).to include("Category is not a number")
+        expect(@item.errors.full_messages).to include("Category must be other than 1")
       end
       it 'condition_idが空では投稿できない' do
-        @item.condition_id = ''
+        @item.condition_id = '1'
         @item.valid?
-        expect(@item.errors.full_messages).to include("Condition is not a number")
+        expect(@item.errors.full_messages).to include("Condition must be other than 1")
       end
       it 'shipping_charge_idが空では投稿できない' do
-        @item.shipping_charge_id = ''
+        @item.shipping_charge_id = '1'
         @item.valid?
-        expect(@item.errors.full_messages).to include("Shipping charge is not a number")
+        expect(@item.errors.full_messages).to include("Shipping charge must be other than 1")
       end
       it 'area_idが空では投稿できない' do
-        @item.area_id = ''
+        @item.area_id = '1'
         @item.valid?
-        expect(@item.errors.full_messages).to include("Area is not a number")
+        expect(@item.errors.full_messages).to include("Area must be other than 1")
       end
       it 'shipping_date_idが空では投稿できない' do
-        @item.shipping_date_id = ''
+        @item.shipping_date_id = '1'
         @item.valid?
-        expect(@item.errors.full_messages).to include("Shipping date is not a number")
+        expect(@item.errors.full_messages).to include("Shipping date must be other than 1")
       end
       it 'priceが空では投稿できない' do
         @item.price = ''
@@ -63,15 +63,35 @@ RSpec.describe Item, type: :model do
         @item.valid?
         expect(@item.errors.full_messages).to include("Price is not included in the list")
       end
+      it 'priceが半角英数字混合では投稿できない' do
+        @item.price = 'furima111'
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price is not a number")
+      end
+      it 'priceが半角英語では投稿できない' do
+        @item.price = 'furimadesu'
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price is not a number")
+      end
       it 'priceが￥300~￥9,999,999以外では投稿できない' do
         @item.price = '200'
         @item.valid?
         expect(@item.errors.full_messages).to include("Price is not included in the list")
       end
-      it 'imageが空では投稿できない' do
-        @item.image = ''
+      it 'priceが￥10.000.000以上では投稿できない' do
+        @item.price = '10.000.000'
         @item.valid?
-        expect(@item.errors.full_messages).to include()
+        expect(@item.errors.full_messages).to include("Price is not a number")
+      end
+      it 'userが紐付いていないと投稿できない' do
+        @item.user = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("User must exist")
+      end
+      it 'imageが空では投稿できない' do
+        @item.image = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Image can't be blank")
       end
     end
   end
