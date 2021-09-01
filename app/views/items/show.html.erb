@@ -29,22 +29,21 @@
         <p class="or-text">or</p>
         <%= link_to "削除", "#", method: :delete, class:"item-destroy" %>
       <% end %>
-      <% unless @item.present? %>
+      <% unless current_user.id == @item.user_id && @item.present? %>
         <%= link_to "購入画面に進む", "#" ,class:"item-red-btn"%>
       <% end %>
     <% end %>
 
-
     
 
     <div class="item-explain-box">
-      <span><%= "商品説明" %></span>
+      <span><%= @item.content %></span>
     </div>
     <table class="detail-table">
       <tbody>
         <tr>
           <th class="detail-item">出品者</th>
-          <td class="detail-value"><%= @item.item_name %></td>
+          <td class="detail-value"><%= @item.user.nickname %></td>
         </tr>
         <tr>
           <th class="detail-item">カテゴリー</th>
@@ -90,7 +89,7 @@
         不快な言葉遣いなどは利用制限や退会処分となることがあります。
       </p>
       <button type="submit" class="comment-btn">
-        <%= image_tag "" ,class:"comment-flag-icon" ,width:"20",height:"25"%>
+        <%= image_tag @item.image ,class:"comment-flag-icon" ,width:"20",height:"25"%>
         <span>コメントする<span>
       </button>
     </form>
