@@ -1,8 +1,8 @@
 class PurchasesController < ApplicationController
   before_action :authenticate_user!, only: [:index, :create]
+  before_action :item_find, only: [:index, :create]
 
   def index
-    @item = Item.find(params[:item_id])
     @purchase_address = PurchaseAddress.new
     if current_user.id == @item.user_id && @item.purchase.present?
       redirect_to root_path
@@ -12,7 +12,6 @@ class PurchasesController < ApplicationController
   end
 
   def create
-    @item = Item.find(params[:item_id])
     @purchase_address = PurchaseAddress.new(purchase_address)
     if @purchase_address.valid?
       pay_item
@@ -36,5 +35,9 @@ class PurchasesController < ApplicationController
         card: purchase_address[:token],
         currency: 'jpy'
       )
+  end
+
+  def item_find
+    @item = Item.find(params[:item_id])
   end
 end
