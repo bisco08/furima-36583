@@ -6,7 +6,7 @@ class PurchasesController < ApplicationController
     @purchase_address = PurchaseAddress.new
     if current_user.id == @item.user_id && @item.purchase.present?
       redirect_to root_path
-    elsif @item.purchase.present?
+    elsif current_user.id == @item.user_id
       redirect_to root_path
     end
   end
